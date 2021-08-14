@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import gql from 'graphql-tag'
 import ApolloClient from "apollo-boost"
+import { ApolloProvider } from '@apollo/react-common';
 
 const client = new ApolloClient({
   uri: 'https://api.github.com/graphql',
@@ -40,7 +41,9 @@ client.query({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
