@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import gql from 'graphql-tag'
 import ApolloClient from "apollo-boost"
 import { ApolloProvider } from '@apollo/react-common';
 
@@ -17,27 +16,6 @@ const client = new ApolloClient({
     })
   }
 })
-
-const query = gql`
-{
-  organization(login: "apollographql") {
-    repositories(first: 5) {
-      nodes {
-        id
-        name
-        url
-        viewerHasStarred
-        stargazers {
-          totalCount
-        }
-      }
-    }
-  }
-}
-`
-client.query({
-  query
-}).then((result) => console.log(result))
 
 ReactDOM.render(
   <React.StrictMode>

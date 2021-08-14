@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
+const query = gql`
+{
+  organization(login: "apollographql") {
+    repositories(first: 5, isFork: false) {
+      nodes {
+        id
+        name
+        url
+        viewerHasStarred
+        stargazers {
+          totalCount
+        }
+      }
+    }
+  }
+}
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Query query={query}>
+      {({loading, data}) => {
+        if (loading) return <p>Loading...</p>
+
+        const repositories = data.organization.repositories.nodes
+
+        return (
+          <div className="App">
+            {repositories.map((repo) => (
+              <li key={repo.id}>
+                <a href={repo.url}>{repo.name}</a>
+                <button>{repo.stargazers.totalCount} Star</button>
+              </li>
+            ))}
+          </div>
+        )
+      }}
+    </Query>
   );
 }
 
