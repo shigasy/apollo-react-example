@@ -14,6 +14,18 @@ const client = new ApolloClient({
         authorization: `Bearer ${process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN}`
       }
     })
+  },
+  onError: ({ graphQLErrors, networlError}) => {
+    // 一括でエラーハンドリングを指定できる
+    // コンポーネント毎に固有の処理を書く必要がない
+    // ただ、errorを返しつつも表示できるデータがあり、表示したいときに一括でエラー画面遷移とかは微妙かも
+    if (graphQLErrors) {
+      console.error(graphQLErrors)
+    }
+    // 再リクエストとかになりそう
+    if (networlError) {
+      console.error(networlError)
+    }
   }
 })
 
