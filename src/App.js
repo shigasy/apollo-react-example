@@ -22,8 +22,9 @@ const query = gql`
 function App() {
   return (
     <Query query={query}>
-      {({loading, data}) => {
+      {({loading, error, data}) => {
         if (loading) return <p>Loading...</p>
+        if (error) return <p>{error.toString()}</p>
 
         const repositories = data.organization.repositories.nodes
 
